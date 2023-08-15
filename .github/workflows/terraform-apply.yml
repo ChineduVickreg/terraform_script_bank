@@ -1,0 +1,58 @@
+name: Deploy Infrastructure
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  tf_fmt:
+    name: Deploy Site
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Checkout Repo
+      uses: actions/checkout@v1
+
+    - name: terraform init
+      uses: hashicorp/terraform-github-actions/init@v0.4.0
+      with:
+        working-directory: /.github/workflows/terraform-apply.yml
+    - name: Debug
+      run: |
+            ls -la
+            pwd
+      env:
+        PRIVATE_GITHUB_TOKEN: ${{ secrets.PRIVATE_GITHUB_TOKEN }}
+        TF_ACTION_WORKING_DIR: 'terraform'
+        AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+    - name: terraform validate
+      uses: hashicorp/terraform-github-actions/validate@v0.3.7
+
+    - name: terraform plan
+      uses: hashicorp/terraform-github-actions/validate@v0.3.7
+
+    - name: terraform apply
+      uses: hashicorp/terraform-github-actions/apply@v0.4.0
+      with:
+        working-directory: /.github/workflows/terraform-apply.yml
+    - name: Debug
+      run: |
+            ls -la
+            pwd
+      env:
+        PRIVATE_GITHUB_TOKEN: ${{ secrets.PRIVATE_GITHUB_TOKEN }}
+        TF_ACTION_WORKING_DIR: 'terraform'
+        AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+    - name: Sync S3
+      uses: jakejarvis/s3-sync-action@v0.5.0
+      env:
+        SOURCE_DIR: './src'
+        AWS_REGION: 'us-east-1'
+        AWS_S3_BUCKET: 'enumv2_production_bucket'
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
