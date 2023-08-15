@@ -37,16 +37,17 @@ jobs:
     - name: terraform apply
       uses: hashicorp/terraform-github-actions/apply@v0.4.0
       with:
+        env:
+        PRIVATE_GITHUB_TOKEN: ${{ secrets.PRIVATE_GITHUB_TOKEN }}
+        TF_ACTION_WORKING_DIR: 'terraform'
+        AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         working-directory: /.github/workflows/terraform-apply.yml
     - name: Debug
       run: |
             ls -la
             pwd
-      env:
-        PRIVATE_GITHUB_TOKEN: ${{ secrets.PRIVATE_GITHUB_TOKEN }}
-        TF_ACTION_WORKING_DIR: 'terraform'
-        AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
 
     - name: Sync S3
       uses: jakejarvis/s3-sync-action@v0.5.0
