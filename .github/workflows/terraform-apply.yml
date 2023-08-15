@@ -24,7 +24,7 @@ jobs:
 
     - name: Terraform init
       run: terraform init
-      working-directory: modules/services/backend/.terraform
+      working-directory: ./terraform
 
 
     - name: Terraform validate
@@ -35,7 +35,7 @@ jobs:
 
     - name: Terraform apply
       run: terraform apply -auto-approve
-      working-directory: modules/services/backend/.terraform
+      working-directory: ./terraform
     
 
 
