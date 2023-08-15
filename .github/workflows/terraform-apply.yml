@@ -35,7 +35,7 @@ jobs:
             pwd
       env:
         PRIVATE_GITHUB_TOKEN: ${{ secrets.PRIVATE_GITHUB_TOKEN }}
-        TF_ACTION_WORKING_DIR: 'terraform'
+        TF_ACTION_WORKING_DIR: ${{secrets.TF_ACTION_WORKING_DIR}}
         AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
