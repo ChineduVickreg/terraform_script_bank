@@ -14,9 +14,9 @@ jobs:
     - name: Checkout Repo
       uses: actions/checkout@v1
     - name: Set up Terraform
-      uses: hashicorp/setup-terraform@v1
+      uses: hashicorp/setup-terraform@v1v0.4.0
       with:
-        terraform_version:  
+        terraform_version:  0.15.0
     
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
@@ -25,10 +25,9 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: us-east-1
 
-    - name: terraform init
-      uses: hashicorp/terraform-github-actions/init@v0.4.0
-      with:
-        working-directory: terraform_script_bank/.github/workflows/terraform-apply.yml
+    - name: Terraform init
+      run: terraform init
+      working-directory: modules/services/backend/.terraform
 
 
     - name: terraform validate
@@ -37,10 +36,9 @@ jobs:
     - name: terraform plan
       uses: hashicorp/terraform-github-actions/validate@v0.3.7
 
-    - name: terraform apply
-      uses: hashicorp/terraform-github-actions/apply@v0.4.0
-      with:
-        working-directory: terraform_script_bank/.github/workflows/terraform-apply.yml
+    - name: Terraform apply
+      run: terraform apply -auto-approve
+      working-directory: modules/services/backend/.terraform
     
 
 
