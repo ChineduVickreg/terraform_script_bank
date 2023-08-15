@@ -28,11 +28,7 @@ jobs:
     - name: terraform init
       uses: hashicorp/terraform-github-actions/init@v0.4.0
       with:
-        working-directory: /.github/workflows/terraform-apply.yml
-    - name: Debug
-      run: |
-            ls -la
-            pwd
+        working-directory: .github/workflows/terraform-apply.yml
 
 
     - name: terraform validate
@@ -44,11 +40,8 @@ jobs:
     - name: terraform apply
       uses: hashicorp/terraform-github-actions/apply@v0.4.0
       with:
-        working-directory: /.github/workflows/terraform-apply.yml
-    - name: Debug
-      run: |
-            ls -la
-            pwd
+        working-directory: .github/workflows/terraform-apply.yml
+    
 
 
     - name: Sync S3
